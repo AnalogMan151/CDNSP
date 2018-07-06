@@ -183,7 +183,7 @@ def get_info(tid):
         n += 1
         if updateTid in game['id']:
             lastestVer = game['version']
-            print('\tAvaible update versions for %s:' % updateTid)
+            print('\tAvailable update versions for %s:' % updateTid)
             print('\t\tv%s' % " v".join(str(i) for i in range(0x10000, lastestVer+1, 0x10000)))
             break
     
