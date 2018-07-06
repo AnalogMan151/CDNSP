@@ -19,7 +19,8 @@ import configparser
 from hashlib import sha256
 from struct import pack as pk, unpack as upk
 from binascii import hexlify as hx, unhexlify as uhx
-import xml.etree.ElementTree as ET, xml.dom.minidom as minidom    
+import xml.etree.ElementTree as ET, xml.dom.minidom as minidom
+import re 
 
 title_name = ''
 
@@ -156,7 +157,7 @@ def get_info(tid):
         j = r.json()
         name = j['formal_name']
 
-        title_name = name.replace('™', '').replace('©', '').replace('®', '').replace(':', '').replace('\\', ' ').replace('/', ' ')
+        title_name = re.sub(r'[/\\:*?"|™©®]+', "", name)
         
         try:
             size = j['total_rom_size']
