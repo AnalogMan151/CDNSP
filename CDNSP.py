@@ -177,7 +177,7 @@ def get_info(tid):
     url = 'https://tagaya.hac.%s.eshop.nintendo.net/tagaya/hac_versionlist' % env
     r = make_request('GET', url)
     j = r.json()
-    
+
     n = 0
     for game in j['titles']:
         n += 1
@@ -377,9 +377,12 @@ def download_game(tid, ver, tkey='', nspRepack=False):
     elif tid.endswith('800'): # Update
         basetid = '%s000'%tid[:-3]
         gameDir = os.path.join(os.path.dirname(__file__), basetid, tid, ver)
-    else:                     # DLC
-        basetid = '%s%s000' % (tid[:-4], str(int(tid[-4])-1))
+    elif not tid.endswith('00'):
+        basetid = '%016x' % (int(tid, 16) - 0x1000 & 0xFFFFFFFFFFFFF000)
         gameDir = os.path.join(os.path.dirname(__file__), basetid, tid)
+    else:
+        print('\tInvalid shogun TitleID %s!' % tid)
+        return
     os.makedirs(gameDir, exist_ok=True)
     
     if tid.endswith('800') and ver == 0:
@@ -652,7 +655,6 @@ repack the downloaded games to nsp format
                 raise ValueError('TitleID %s is not a 16-digits hexadecimal number!' % tid)
             if len(tkey) != 32:
                 raise ValueError('Titlekey %s is not a 32-digits hexadecimal number!' % tkey)
-            
             get_info(tid)
             download_game(tid, ver, tkey, nspRepack=args.repack)
         except ValueError:
