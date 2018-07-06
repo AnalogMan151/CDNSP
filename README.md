@@ -3,7 +3,8 @@ Python3 script to connect to Nintendo CDN and print title info, download titles,
 
 Configure `CDNSPconfig.json` before use.<br> 
 For Windows paths, be sure to use double backspaces: `C:\\Users\\Desktop\\...`<br>
-Currently includes hactool binaries for macOS and Windows. 
+Currently includes hactool binaries for macOS and Windows.<br>
+Supply your own `keys.txt` file filled with Switch keys.
 
 ```
 usage: CDNSP.py [-h] [-i TID [TID ...]] [-g TID-VER-TKEY [TID-VER-TKEY ...]]
