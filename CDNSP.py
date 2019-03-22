@@ -319,7 +319,7 @@ def download_title(gameDir, tid, ver, tkey='', nspRepack=False, n=''):
                 with open(os.path.join(os.path.dirname(__file__), 'Ticket.tik'), 'rb') as intik:
                     data = bytearray(intik.read())
                     data[0x180:0x190] = uhx(tkey)
-                    data[0x286] = int(mKeyRev)
+                    data[0x285] = int(mKeyRev)
                     data[0x2A0:0x2B0] = uhx(rightsID)
                 
                     with open(tikPath, 'wb') as outtik:
