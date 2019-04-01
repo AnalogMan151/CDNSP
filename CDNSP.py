@@ -175,7 +175,7 @@ def get_info(tid):
         print('\tCan\'t get name of title, TitleID not found on Shogun!')
         title_name = 'Unknown'
     
-    url = 'https://tagaya.hac.%s.eshop.nintendo.net/tagaya/hac_versionlist' % env
+    url = 'https://superfly.hac.%s.d4c.nintendo.net/v1/t/%s/dv' % (env,tid)
     r = make_request('GET', url)
     j = r.json()
 
@@ -614,10 +614,11 @@ def main():
     formatter = lambda prog: argparse.RawTextHelpFormatter(prog, max_help_position=40)
     parser = argparse.ArgumentParser(formatter_class=formatter)
     
-    parser.add_argument('-i', dest='info', default=[], metavar='TID', nargs='+', help='''\
-print info about a title:
-   - name from shogun
-   - available updates from versionlist''')
+    # XXX: BROKEN. Shogun always 403s now
+    #parser.add_argument('-i', dest='info', default=[], metavar='TID', nargs='+', help='''\
+#print info about a title:
+#   - name from shogun
+#   - available updates from versionlist''')
     
     parser.add_argument('-g', dest='games', default=[], metavar='TID-VER-TKEY', nargs='+', help='''\
 download games/updates/DLC's:
@@ -646,8 +647,8 @@ repack the downloaded games to nsp format
         parser.print_help()
         return 1
     
-    for tid in args.info:
-        get_info(tid.lower())
+    #for tid in args.info:
+    #    get_info(tid.lower())
     
     for game in args.games:
         try:
@@ -656,7 +657,7 @@ repack the downloaded games to nsp format
                 raise ValueError('TitleID %s is not a 16-digits hexadecimal number!' % tid)
             if len(tkey) != 32:
                 raise ValueError('Titlekey %s is not a 32-digits hexadecimal number!' % tkey)
-            get_info(tid)
+            #get_info(tid)
             download_game(tid, ver, tkey, nspRepack=args.repack)
         except ValueError:
             try:
@@ -668,7 +669,7 @@ repack the downloaded games to nsp format
             if len(tid) != 16:
                 raise ValueError('TitleID %s is not a 16-digits hexadecimal number!' % tid)
 
-            get_info(tid)
+            #get_info(tid)
             download_game(tid, ver, nspRepack=args.repack)
         
     for ver in args.sysupdates:
