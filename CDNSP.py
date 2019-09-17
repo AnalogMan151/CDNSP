@@ -474,6 +474,7 @@ class cnmt:
         self.ver = str(read_u32(f, 0x8))
         self.sysver = str(read_u64(f, 0x28))
         self.dlsysver = str(read_u64(f, 0x18))
+        self.extendedHeaderSize = read_u16(f, 0xE)
         self.digest = hx(read_at(f, f.seek(0, 2)-0x20, f.seek(0, 2))).decode()
         
         f.close()
@@ -484,7 +485,9 @@ class cnmt:
         data = {}
         if self.type == 'SystemUpdate':
             EntriesNB = read_u16(f, 0x12)
-            for n in range(0x20, 0x10*EntriesNB, 0x10):
+            startRange = self.extendedHeaderSize + 0x20
+            endRange = startRange + (0x10 * EntriesNB)
+            for n in range(startRange, endRange, 0x10):
                 tid  = hex(read_u64(f, n))[2:]
                 if len(tid) != 16:
                     tid = '%s%s' % ((16-len(tid))*'0',  tid)
